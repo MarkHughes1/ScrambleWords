@@ -9,6 +9,7 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.Reflection;
 using System.IO;
+using System.Diagnostics;
 
 
 namespace ScrambleWords
@@ -28,6 +29,8 @@ namespace ScrambleWords
 
         private void btn_Go_Click(object sender, EventArgs e)
         {
+
+            Stopwatch timer1 = new Stopwatch();
             // Recover the letters from the dialog box
             var Letters = txt_Word.Text.ToString();
             //split the dialog string into individual letters
@@ -37,20 +40,23 @@ namespace ScrambleWords
             //find all the words that contain only those letters and no others.
             var WordsWithONLYTheseLetters = ReturnAllWordsWithONLYTheseLettersIn(letters);
 
-            var frequency = SetupLetterFrequencyDictionary(letters); 
+            var frequency = SetupLetterFrequencyDictionary(letters);
 
+            timer1.Start();
             var AllLettersDifferent = AreAllTheLettersSelectedDifferent(letters);
+            timer1.Stop();
 
+            MessageBox.Show(timer1.ElapsedMilliseconds.ToString());
 
-             if (AllLettersDifferent)
-            {
-                MessageBox.Show("Found no duplicate letters");
-            }
-            else
-            {
-                MessageBox.Show("Found duplicate letters");
+            // if (AllLettersDifferent)
+            //{
+            //    MessageBox.Show("Found no duplicate letters");
+            //}
+            //else
+            //{
+            //    MessageBox.Show("Found duplicate letters");
             
-            }
+            //}
 
             //MessageBox.Show("I found " + WordsWithTheseLetters.Count + " Words with these letters");
             //MessageBox.Show("I found " + WordsWithONLYTheseLetters.Count + " Words with ONLY these letters");
@@ -166,7 +172,8 @@ namespace ScrambleWords
             string line = "";
             //need to load file here
            // System.IO.StreamReader file = new System.IO.StreamReader(MyDirectory() + @"\WordList_Eng_UK.txt");
-            System.IO.StreamReader file = new System.IO.StreamReader(MyDirectory() + @"\wordsEn.txt");
+           // System.IO.StreamReader file = new System.IO.StreamReader(MyDirectory() + @"\wordsEn.txt");
+            System.IO.StreamReader file = new System.IO.StreamReader(MyDirectory() + @"\SmallWordList.txt");
           
             while (!string.IsNullOrWhiteSpace(line = file.ReadLine()))
             {
