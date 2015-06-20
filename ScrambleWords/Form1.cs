@@ -37,6 +37,8 @@ namespace ScrambleWords
             //find all the words that contain only those letters and no others.
             var WordsWithONLYTheseLetters = ReturnAllWordsWithONLYTheseLettersIn(letters);
 
+            var frequency = SetupLetterFrequencyDictionary(letters); 
+
             var AllLettersDifferent = AreAllTheLettersSelectedDifferent(letters);
 
 
@@ -55,6 +57,25 @@ namespace ScrambleWords
 
         }
 
+        private Dictionary<char, int> SetupLetterFrequencyDictionary(List<char> letters)
+        {
+            var letterFrequency = new Dictionary<char, int>();
+
+            foreach (char letter in letters)
+            {
+                if (letterFrequency.ContainsKey(letter))
+                {
+                    letterFrequency[letter] += 1;
+                }
+                else
+                {
+                    letterFrequency.Add(letter, 1);
+                }
+            }
+
+            return letterFrequency;
+        }
+
         /// <summary>
         /// Find out if a list of letters contains a duplicate letter
         /// </summary>
@@ -62,30 +83,17 @@ namespace ScrambleWords
         /// <returns></returns>
         public bool AreAllTheLettersSelectedDifferent(List<char> letters)
         {
-            Dictionary<char, int> charcount = new Dictionary<char , int>();
-            //int charcount = 0;
-            //if (letters.)
-            foreach (char letter in letters)
-            {
-                if (letters.Contains(letter))
-                {
-                    foreach (KeyValuePair<char , int> kvp in charcount)
-                    {
-                        if (kvp.Key.Equals(letter))
-                        {
 
-                        }
-                    }
-                    //if (charcount.ContainsKey(letter))
-                    //{
-                    //    charcount.
-                   // }
+            Dictionary<char, int> frequency = SetupLetterFrequencyDictionary(letters); 
+
+            foreach (KeyValuePair<char,int> kvp in frequency)
+            {
+                if (kvp.Value > 1)
+                {
+                    return false;
                 }
-                //if (charcount > 1) //more than one instance of the letter found
-                //{
-                //    return false;
-                //}
             }
+            
             return true;
 
         }
