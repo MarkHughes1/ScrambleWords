@@ -41,12 +41,19 @@ namespace ScrambleWords
             var WordsWithONLYTheseLetters = ReturnAllWordsWithONLYTheseLettersIn(letters);
 
             var frequency = SetupLetterFrequencyDictionary(letters);
-
+            
+            timer1.Reset();
             timer1.Start();
             var AllLettersDifferent = AreAllTheLettersSelectedDifferent(letters);
             timer1.Stop();
+            MessageBox.Show(timer1.ElapsedTicks.ToString());
 
-            MessageBox.Show(timer1.ElapsedMilliseconds.ToString());
+            timer1.Reset();
+            timer1.Start();
+            var AlllettersDifferent2 = AllLettersAreUnique(letters);
+            timer1.Stop();
+
+            MessageBox.Show(timer1.ElapsedTicks.ToString());
 
             // if (AllLettersDifferent)
             //{
@@ -80,6 +87,29 @@ namespace ScrambleWords
             }
 
             return letterFrequency;
+        }
+
+        /// <summary>
+        /// fast way to determine if there are multiples of any letters
+        /// </summary>
+        /// <param name="letters"></param>
+        /// <returns></returns>
+        private bool AllLettersAreUnique(List<char> letters)
+        {
+            var letterFrequency = new Dictionary<char, int>();
+
+            foreach (char letter in letters)
+            {
+                if (letterFrequency.ContainsKey(letter))
+                {
+                    return false;
+                }
+                else
+                {
+                    letterFrequency.Add(letter, 1);
+                }
+            }
+            return true;
         }
 
         /// <summary>

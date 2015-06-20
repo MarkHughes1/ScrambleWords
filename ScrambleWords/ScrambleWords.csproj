@@ -78,7 +78,9 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="SmallWordList.txt" />
+    <Content Include="SmallWordList.txt">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <Content Include="WordList_Eng_UK.txt">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
