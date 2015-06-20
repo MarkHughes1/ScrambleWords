@@ -16,7 +16,8 @@ namespace ScrambleWords
 {
     public partial class Form1 : Form
     {
-        List<string> Dictionary = new List<string>();        
+        List<string> Dictionary = new List<string>();
+        string EntireFile = string.Empty;
 
         public Form1()
         {
@@ -43,7 +44,7 @@ namespace ScrambleWords
 
            // foreach (string Letters in Dictionary)
 
-            var letters = SplitString(Letters);
+            var letters = SplitString(EntireFile);
             //find all the words with those letters in
            // var WordsWithTheseLetters = ReturnAllWordsWithTheseLettersIn(letters);
             //find all the words that contain only those letters and no others.
@@ -51,18 +52,18 @@ namespace ScrambleWords
 
             var frequency = SetupLetterFrequencyDictionary(letters);
             
-            timer1.Reset();
-            timer1.Start();
-            var AllLettersDifferent = AreAllTheLettersSelectedDifferent(letters);
-            timer1.Stop();
-            MessageBox.Show(timer1.ElapsedTicks.ToString());
+          //  timer1.Reset();
+          //  timer1.Start();
+          //  var AllLettersDifferent = AreAllTheLettersSelectedDifferent(letters);
+          //  timer1.Stop();
+          //  MessageBox.Show(timer1.ElapsedTicks.ToString());
 
-            timer1.Reset();
-            timer1.Start();
-            var AlllettersDifferent2 = AllLettersAreUnique(letters);
-            timer1.Stop();
+          //  timer1.Reset();
+          //  timer1.Start();
+          //  var AlllettersDifferent2 = AllLettersAreUnique(letters);
+          //  timer1.Stop();
 
-            MessageBox.Show(timer1.ElapsedTicks.ToString());
+           // MessageBox.Show(timer1.ElapsedTicks.ToString());
 
          
         }
@@ -116,7 +117,6 @@ namespace ScrambleWords
         /// <returns></returns>
         public bool AreAllTheLettersSelectedDifferent(List<char> letters)
         {
-
             Dictionary<char, int> frequency = SetupLetterFrequencyDictionary(letters); 
 
             foreach (KeyValuePair<char,int> kvp in frequency)
@@ -126,7 +126,6 @@ namespace ScrambleWords
                     return false;
                 }
             }
-            
             return true;
 
         }
@@ -144,7 +143,6 @@ namespace ScrambleWords
                     {
                         Pass = false;
                     }
-
                 }
                 if (Pass == true)
                 {
@@ -177,7 +175,6 @@ namespace ScrambleWords
             return WordsWithTheseLetters;
         }
 
-
         public List<char> SplitString(string inputLetters)
         {
             var letters = new List<char>();
@@ -189,10 +186,6 @@ namespace ScrambleWords
             return letters;
         }
 
-
-
-
-
         void PopulateDictionary()
         {
             List<string> duplicates = new List<string>();
@@ -200,24 +193,31 @@ namespace ScrambleWords
             //need to load file here
            // System.IO.StreamReader file = new System.IO.StreamReader(MyDirectory() + @"\WordList_Eng_UK.txt");
            // System.IO.StreamReader file = new System.IO.StreamReader(MyDirectory() + @"\wordsEn.txt");
-            System.IO.StreamReader file = new System.IO.StreamReader(MyDirectory() + @"\SmallWordList.txt");
-          
-            while (!string.IsNullOrWhiteSpace(line = file.ReadLine()))
-            {
-                if (Dictionary.Contains(line))
-                {
-                    duplicates.Add(line);
-                }
-                else
-                {
-                    Dictionary.Add(line);
-                }
-            }
-            if (duplicates.Count > 0)
-            {
-                //MessageBox.Show("Duplicate words found " + duplicates.Count);
-            }
-            file.Close();
+           // System.IO.StreamReader file = new System.IO.StreamReader(MyDirectory() + @"\SmallWordList.txt");
+
+            string path = (MyDirectory() + @"\waroftheworlds.txt");
+
+           // System.IO.StreamReader file = new System.IO.StreamReader(MyDirectory() + @"\waroftheworlds.txt");
+        
+            EntireFile = File.ReadAllText(path);
+            //while (!string.IsNullOrWhiteSpace(line = file.ReadLine()))
+            //{
+            //    EntireFile += line;
+
+            //    if (Dictionary.Contains(line))
+            //    {
+            //        duplicates.Add(line);
+            //    }
+            //    else
+            //    {
+            //        Dictionary.Add(line);
+            //    }
+            //}
+            //if (duplicates.Count > 0)
+            //{
+            //    //MessageBox.Show("Duplicate words found " + duplicates.Count);
+            //}
+            //file.Close();
 
 
         }

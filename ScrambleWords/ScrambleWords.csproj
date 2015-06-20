@@ -81,6 +81,9 @@
     <Content Include="SmallWordList.txt">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
+    <Content Include="waroftheworlds.txt">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <Content Include="WordList_Eng_UK.txt">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
