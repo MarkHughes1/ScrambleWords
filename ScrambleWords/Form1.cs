@@ -32,13 +32,22 @@ namespace ScrambleWords
 
             Stopwatch timer1 = new Stopwatch();
             // Recover the letters from the dialog box
-            var Letters = txt_Word.Text.ToString();
+            string Letters = string.Empty;
+            foreach (string str in Dictionary)
+            {
+                Letters += str;
+            }
+
+            //var Letters = Dictionary..ToString();// txt_Word.Text.ToString();
             //split the dialog string into individual letters
+
+           // foreach (string Letters in Dictionary)
+
             var letters = SplitString(Letters);
             //find all the words with those letters in
-            var WordsWithTheseLetters = ReturnAllWordsWithTheseLettersIn(letters);
+           // var WordsWithTheseLetters = ReturnAllWordsWithTheseLettersIn(letters);
             //find all the words that contain only those letters and no others.
-            var WordsWithONLYTheseLetters = ReturnAllWordsWithONLYTheseLettersIn(letters);
+           // var WordsWithONLYTheseLetters = ReturnAllWordsWithONLYTheseLettersIn(letters);
 
             var frequency = SetupLetterFrequencyDictionary(letters);
             
@@ -55,19 +64,7 @@ namespace ScrambleWords
 
             MessageBox.Show(timer1.ElapsedTicks.ToString());
 
-            // if (AllLettersDifferent)
-            //{
-            //    MessageBox.Show("Found no duplicate letters");
-            //}
-            //else
-            //{
-            //    MessageBox.Show("Found duplicate letters");
-            
-            //}
-
-            //MessageBox.Show("I found " + WordsWithTheseLetters.Count + " Words with these letters");
-            //MessageBox.Show("I found " + WordsWithONLYTheseLetters.Count + " Words with ONLY these letters");
-
+         
         }
 
         private Dictionary<char, int> SetupLetterFrequencyDictionary(List<char> letters)
