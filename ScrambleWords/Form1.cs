@@ -39,9 +39,11 @@ namespace ScrambleWords
                 Letters += str;
             }
 
-            //var Letters = Dictionary..ToString();// txt_Word.Text.ToString();
-            //split the dialog string into individual letters
+            var LettersTB = txt_Word.Text.ToString();
 
+            var letterstb = SplitString(LettersTB);
+            //split the dialog string into individual letters
+            var unique = AllLettersAreUnique(letterstb);
            // foreach (string Letters in Dictionary)
 
             var letters = SplitString(EntireFile);
@@ -87,12 +89,21 @@ namespace ScrambleWords
             return letterFrequency;
         }
 
+        private bool AllLettersAreUnique(List<char> letters)
+        {
+            if (letters.Count != letters.Distinct().Count())
+            {
+                return false;
+            }
+            return true;
+        }
+
         /// <summary>
         /// fast way to determine if there are multiples of any letters
         /// </summary>
         /// <param name="letters"></param>
         /// <returns></returns>
-        private bool AllLettersAreUnique(List<char> letters)
+        private bool AllLettersAreUnique2(List<char> letters)
         {
             var letterFrequency = new Dictionary<char, int>();
 
