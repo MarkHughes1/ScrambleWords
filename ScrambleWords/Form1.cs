@@ -45,10 +45,14 @@ namespace ScrambleWords
             //split the dialog string into individual letters
             var unique = AllLettersAreUnique(letterstb);
            // foreach (string Letters in Dictionary)
+  
+            timer1.Reset();
+            timer1.Start();
+            var letters3 = RandomLetters(100000);
 
-            var letters3 = RandomLetters(1000);
+            MessageBox.Show(timer1.ElapsedMilliseconds.ToString());
 
-            var letters = SplitString(EntireFile);
+            var letters = SplitString(letters3);
             //find all the words with those letters in
            // var WordsWithTheseLetters = ReturnAllWordsWithTheseLettersIn(letters);
             //find all the words that contain only those letters and no others.
@@ -56,8 +60,7 @@ namespace ScrambleWords
 
             var frequency = SetupLetterFrequencyDictionary(letters);
             
-          //  timer1.Reset();
-          //  timer1.Start();
+         
           //  var AllLettersDifferent = AreAllTheLettersSelectedDifferent(letters);
           //  timer1.Stop();
           //  MessageBox.Show(timer1.ElapsedTicks.ToString());
@@ -72,18 +75,20 @@ namespace ScrambleWords
          
         }
 
-
+        /// <summary>
+        /// this needs to be multi threaded and much faster...
+        /// </summary>
+        /// <param name="length"></param>
+        /// <returns></returns>
         public string RandomLetters(int length)
         {
             string random = string.Empty;
             int n = 0;
             var randomnumber = new Random();
-            int randnumber = 0;
 
             for (n = 0; n < length; n++)
             {
-                randnumber = randomnumber.Next(65, 91);
-                random += char.ConvertFromUtf32(randnumber);
+                random += char.ConvertFromUtf32( randomnumber.Next(65,91));
             }
             return random;
         }
