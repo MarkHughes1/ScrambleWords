@@ -46,6 +46,8 @@ namespace ScrambleWords
             var unique = AllLettersAreUnique(letterstb);
            // foreach (string Letters in Dictionary)
 
+            var letters3 = RandomLetters(1000);
+
             var letters = SplitString(EntireFile);
             //find all the words with those letters in
            // var WordsWithTheseLetters = ReturnAllWordsWithTheseLettersIn(letters);
@@ -68,6 +70,22 @@ namespace ScrambleWords
            // MessageBox.Show(timer1.ElapsedTicks.ToString());
 
          
+        }
+
+
+        public string RandomLetters(int length)
+        {
+            string random = string.Empty;
+            int n = 0;
+            var randomnumber = new Random();
+            int randnumber = 0;
+
+            for (n = 0; n < length; n++)
+            {
+                randnumber = randomnumber.Next(65, 91);
+                random += char.ConvertFromUtf32(randnumber);
+            }
+            return random;
         }
 
         private Dictionary<char, int> SetupLetterFrequencyDictionary(List<char> letters)
