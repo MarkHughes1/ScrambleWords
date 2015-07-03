@@ -9,13 +9,15 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.Reflection;
 using System.IO;
+using System.Diagnostics;
 
 
 namespace ScrambleWords
 {
     public partial class Form1 : Form
     {
-        List<string> Dictionary = new List<string>();        
+        List<string> Dictionary = new List<string>();
+        string EntireFile = string.Empty;
 
         public Form1()
         {
@@ -28,31 +30,137 @@ namespace ScrambleWords
 
         private void btn_Go_Click(object sender, EventArgs e)
         {
+
+            Stopwatch timer1 = new Stopwatch();
             // Recover the letters from the dialog box
-            var Letters = txt_Word.Text.ToString();
+            string Letters = string.Empty;
+            foreach (string str in Dictionary)
+            {
+                Letters += str;
+            }
+
+            var LettersTB = txt_Word.Text.ToString();
+
+            var letterstb = SplitString(LettersTB);
             //split the dialog string into individual letters
-            var letters = SplitString(Letters);
+            var unique = AllLettersAreUnique(letterstb);
+           // foreach (string Letters in Dictionary)
+  
+            timer1.Reset();
+            timer1.Start();
+            var letters3 = RandomLetters(500000);
+
+            MessageBox.Show(timer1.ElapsedMilliseconds.ToString());
+
+            var letters = SplitString(letters3);
             //find all the words with those letters in
-            var WordsWithTheseLetters = ReturnAllWordsWithTheseLettersIn(letters);
+           // var WordsWithTheseLetters = ReturnAllWordsWithTheseLettersIn(letters);
             //find all the words that contain only those letters and no others.
-            var WordsWithONLYTheseLetters = ReturnAllWordsWithONLYTheseLettersIn(letters);
+           // var WordsWithONLYTheseLetters = ReturnAllWordsWithONLYTheseLettersIn(letters);
 
-            var AllLettersDifferent = AreAllTheLettersSelectedDifferent(letters);
-
-
-             if (AllLettersDifferent)
-            {
-                MessageBox.Show("Found no duplicate letters");
-            }
-            else
-            {
-                MessageBox.Show("Found duplicate letters");
+            var frequency = SetupLetterFrequencyDictionary(letters);
             
+         
+          //  var AllLettersDifferent = AreAllTheLettersSelectedDifferent(letters);
+          //  timer1.Stop();
+          //  MessageBox.Show(timer1.ElapsedTicks.ToString());
+
+          //  timer1.Reset();
+          //  timer1.Start();
+          //  var AlllettersDifferent2 = AllLettersAreUnique(letters);
+          //  timer1.Stop();
+
+           // MessageBox.Show(timer1.ElapsedTicks.ToString());
+
+         
+        }
+
+        /// <summary>
+        /// this needs to be multi threaded and much faster...
+        /// </summary>
+        /// <param name="length"></param>
+        /// <returns></returns>
+        public string FastRandomLetters(int length)
+        {
+            // Need a faster way to generate random numbers.
+            string random = string.Empty;
+            //int n = 0;
+            //var randomnumber = new Random();
+
+            //for (n = 0; n < length; n++)
+            //{
+            //    random += char.ConvertFromUtf32(randomnumber.Next(65, 91));
+            //}
+            return random;
+        }
+
+        /// <summary>
+        /// this needs to be multi threaded and much faster...
+        /// </summary>
+        /// <param name="length"></param>
+        /// <returns></returns>
+        public string RandomLetters(int length)
+        {
+            string random = string.Empty;
+            uint n = 0;
+            var randomnumber = new Random();
+
+            for (n = 0; n < length; n++)
+            {
+                random += char.ConvertFromUtf32( randomnumber.Next(65,91));
+            }
+            return random;
+        }
+
+        private Dictionary<char, int> SetupLetterFrequencyDictionary(List<char> letters)
+        {
+            var letterFrequency = new Dictionary<char, int>();
+
+            foreach (char letter in letters)
+            {
+                if (letterFrequency.ContainsKey(letter))
+                {
+                    letterFrequency[letter] += 1;
+                }
+                else
+                {
+                    letterFrequency.Add(letter, 1);
+                }
             }
 
-            //MessageBox.Show("I found " + WordsWithTheseLetters.Count + " Words with these letters");
-            //MessageBox.Show("I found " + WordsWithONLYTheseLetters.Count + " Words with ONLY these letters");
+            return letterFrequency;
+        }
 
+        private bool AllLettersAreUnique(List<char> letters)
+        {
+            if (letters.Count != letters.Distinct().Count())
+            {
+                return false;
+            }
+            return true;
+        }
+
+        /// <summary>
+        /// fast way to determine if there are multiples of any letters
+        /// </summary>
+        /// <param name="letters"></param>
+        /// <returns></returns>
+        private bool AllLettersAreUnique2(List<char> letters)
+        {
+            var letterFrequency = new Dictionary<char, int>();
+
+            foreach (char letter in letters)
+            {
+                if (letterFrequency.ContainsKey(letter))
+                {
+                    return false;
+                }
+                else
+                {
+                    letterFrequency.Add(letter, 1);
+                }
+            }
+            return true;
         }
 
         /// <summary>
@@ -62,29 +170,14 @@ namespace ScrambleWords
         /// <returns></returns>
         public bool AreAllTheLettersSelectedDifferent(List<char> letters)
         {
-            Dictionary<char, int> charcount = new Dictionary<char , int>();
-            //int charcount = 0;
-            //if (letters.)
-            foreach (char letter in letters)
-            {
-                if (letters.Contains(letter))
-                {
-                    foreach (KeyValuePair<char , int> kvp in charcount)
-                    {
-                        if (kvp.Key.Equals(letter))
-                        {
+            Dictionary<char, int> frequency = SetupLetterFrequencyDictionary(letters); 
 
-                        }
-                    }
-                    //if (charcount.ContainsKey(letter))
-                    //{
-                    //    charcount.
-                   // }
+            foreach (KeyValuePair<char,int> kvp in frequency)
+            {
+                if (kvp.Value > 1)
+                {
+                    return false;
                 }
-                //if (charcount > 1) //more than one instance of the letter found
-                //{
-                //    return false;
-                //}
             }
             return true;
 
@@ -103,7 +196,6 @@ namespace ScrambleWords
                     {
                         Pass = false;
                     }
-
                 }
                 if (Pass == true)
                 {
@@ -136,7 +228,6 @@ namespace ScrambleWords
             return WordsWithTheseLetters;
         }
 
-
         public List<char> SplitString(string inputLetters)
         {
             var letters = new List<char>();
@@ -148,34 +239,38 @@ namespace ScrambleWords
             return letters;
         }
 
-
-
-
-
         void PopulateDictionary()
         {
             List<string> duplicates = new List<string>();
             string line = "";
             //need to load file here
            // System.IO.StreamReader file = new System.IO.StreamReader(MyDirectory() + @"\WordList_Eng_UK.txt");
-            System.IO.StreamReader file = new System.IO.StreamReader(MyDirectory() + @"\wordsEn.txt");
-          
-            while (!string.IsNullOrWhiteSpace(line = file.ReadLine()))
-            {
-                if (Dictionary.Contains(line))
-                {
-                    duplicates.Add(line);
-                }
-                else
-                {
-                    Dictionary.Add(line);
-                }
-            }
-            if (duplicates.Count > 0)
-            {
-                //MessageBox.Show("Duplicate words found " + duplicates.Count);
-            }
-            file.Close();
+           // System.IO.StreamReader file = new System.IO.StreamReader(MyDirectory() + @"\wordsEn.txt");
+           // System.IO.StreamReader file = new System.IO.StreamReader(MyDirectory() + @"\SmallWordList.txt");
+
+            string path = (MyDirectory() + @"\waroftheworlds.txt");
+
+           // System.IO.StreamReader file = new System.IO.StreamReader(MyDirectory() + @"\waroftheworlds.txt");
+        
+            EntireFile = File.ReadAllText(path);
+            //while (!string.IsNullOrWhiteSpace(line = file.ReadLine()))
+            //{
+            //    EntireFile += line;
+
+            //    if (Dictionary.Contains(line))
+            //    {
+            //        duplicates.Add(line);
+            //    }
+            //    else
+            //    {
+            //        Dictionary.Add(line);
+            //    }
+            //}
+            //if (duplicates.Count > 0)
+            //{
+            //    //MessageBox.Show("Duplicate words found " + duplicates.Count);
+            //}
+            //file.Close();
 
 
         }
