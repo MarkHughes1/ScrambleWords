@@ -48,7 +48,7 @@ namespace ScrambleWords
   
             timer1.Reset();
             timer1.Start();
-            var letters3 = RandomLetters(100000);
+            var letters3 = RandomLetters(500000);
 
             MessageBox.Show(timer1.ElapsedMilliseconds.ToString());
 
@@ -80,10 +80,29 @@ namespace ScrambleWords
         /// </summary>
         /// <param name="length"></param>
         /// <returns></returns>
+        public string FastRandomLetters(int length)
+        {
+            // Need a faster way to generate random numbers.
+            string random = string.Empty;
+            //int n = 0;
+            //var randomnumber = new Random();
+
+            //for (n = 0; n < length; n++)
+            //{
+            //    random += char.ConvertFromUtf32(randomnumber.Next(65, 91));
+            //}
+            return random;
+        }
+
+        /// <summary>
+        /// this needs to be multi threaded and much faster...
+        /// </summary>
+        /// <param name="length"></param>
+        /// <returns></returns>
         public string RandomLetters(int length)
         {
             string random = string.Empty;
-            int n = 0;
+            uint n = 0;
             var randomnumber = new Random();
 
             for (n = 0; n < length; n++)
